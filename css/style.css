@@ -1,0 +1,27 @@
+
+#ball{
+  position: absolute;
+  top:380px;
+  left:1000px;
+}
+
+#la{
+  position: absolute;
+  top:380px;
+  left:500px;
+}
+
+#suan{
+  position: absolute;
+  top:380px;
+  left:0px;
+}
+
+#main{
+  text-align: center;
+  color: #fff;
+  font-size: 90px;
+  top:300px
+	position: absolute;
+
+}

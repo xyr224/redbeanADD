@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Guess The Number Game</title>
+    <style>
+
+        html {
+            font-family: sans-serif;
+        }
+
+        body {
+            width: 50%;
+            max-width: 800px;
+            min-width: 480px;
+            margin: 0 auto;
+        }
+
+        .lastResult {
+            color: white;
+            padding: 3px;
+        }
+
+        body {
+            background-color: #ffccce;
+        }
+    </style>
+</head>
+<body>
+    <h1>
+      <font size="15">
+      Guess Who I am
+    </font>
+    </h1>
+    <p>
+      <font size="8">
+      Hi, I'm XXX, in order to let you guys know out who I am. I will give you hint after you win this game.
+    </font>
+    </p>
+    <div class="form">
+        <label for="guessField">
+          <font size="6">
+          guess one number from 1 to 100:
+        </font>
+        </label>
+        <input type="text" id="guessField" class="guessField">
+        <input type="submit" value="start" class="guessSubmit">
+    </div>
+    <!-- 动态生成数据 -->
+    <div class="resultParas">
+        <p class="guesses"></p>
+        <p class="lastResult"></p>
+        <p class="lowOrHi"></p>
+    </div>
+    <script>
+        // 获取类名，动态生成数据
+        const guesses = document.querySelector('.guesses');
+        const lastResult = document.querySelector('.lastResult');
+        const lowOrHi = document.querySelector('.lowOrHi');
+        const guessField = document.querySelector('.guessField');
+        const guessSubmit = document.querySelector('.guessSubmit');
+
+        // 生成一个0~100的随机数
+        let randomNum = Math.floor(Math.random() * 100) + 1;
+
+        // 设置竞猜次数，初始值为1
+        let times = 1;
+
+        // 重置按钮，游戏结束时出现，点击后回到游戏初始状态
+        let resetButton;
+
+        function checkGuess() {
+            let inputNum = Number(guessField.value);
+            if (times === 1) guesses.textContent = 'The numbers that you have guess: '; // 当第一次游戏时，生成新字符串
+            guesses.textContent += inputNum + ' '; // 动态更新每次猜测的数字
+            if (inputNum === randomNum) { // 若猜对了
+
+                // 设置lastResult类对应的标签的字体和背景颜色
+                lastResult.textContent = 'OMG! Here is the hint: I am a food that is round and sweet';
+                lastResult.style.backgroundColor = 'green';
+                lowOrHi.textContent = '';
+
+                // 重置游戏
+                go();
+            } else if (times === 10) { // 若10次猜测机会用完
+                lastResult.textContent = 'You used all your chances';
+                lastResult.style.backgroundColor = 'pink';
+                lowOrHi.textContent = '';
+                setGOV();
+            } else {  // 若猜错了
+                lastResult.textContent = 'Wrong';
+                lastResult.style.backgroundColor = 'red';
+                if (inputNum < randomNum) lowOrHi.textContent = 'too small';
+                else lowOrHi.textContent = 'too big';
+            }
+            times++;
+            guessField.value = ''; // 清空输入域
+            guessField.focus(); // 重新聚焦在此
+        }
+
+        // 给提交按钮设置监听事件，每次点击执行一次checkGuess函数
+        guessSubmit.addEventListener('click', checkGuess);
+
+        // 重置游戏，使游戏回到初始状态
+        function setGOV() {
+            // 输入域和提交案件设置为不可用
+            guessField.disabled = true;
+            guessSubmit.disabled = true;
+
+            // 创建重置按钮
+            resetButton = document.createElement('button');
+            resetButton.textContent = 'restart';
+            document.body.appendChild(resetButton);
+
+            // 设置重置按钮监听事件
+            resetButton.addEventListener('click', resetGame);
+        }
+
+        //跳转页面
+        function go() {
+            // 输入域和提交案件设置为不可用
+            guessField.disabled = true;
+            guessSubmit.disabled = true;
+
+            // 创建重置按钮
+            resetButton = document.createElement('button');
+            resetButton.textContent = 'Next';
+            document.body.appendChild(resetButton);
+
+            // 设置重置按钮监听事件
+            resetButton.addEventListener('click', function () {
+                location.href = "page2copy.html";
+            });
+        }
+
+        // 重置函数
+        function resetGame() {
+
+            // 游戏次数重新为设为1
+            times = 1;
+
+            // 获取类resultParas下所有的p标签并将其内容设置为空
+            let resetParas = document.querySelectorAll('.resultParas p');
+            for (let i = 0; i < resetParas.length; i++)
+                resetParas[i].textContent = '';
+
+            // 输入框内容为空
+            guessField.value = '';
+
+            // 输入框和提交按钮重新开放
+            guessField.disabled = false;
+            guessSubmit.disabled = false;
+
+            // 重新聚焦到输入框
+            guessField.focus();
+
+            // 设置背景色为白色lastResult类对应的标签为白色
+            lastResult.style.backgroundColor = 'white';
+
+            // 删除重置按钮
+            resetButton.parentNode.removeChild(resetButton);
+
+            // 更新随机数
+            randomNum = Math.floor(Math.random() * 100) + 1;
+        }
+
+    </script>
+</body>
+</html>
